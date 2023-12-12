@@ -52,23 +52,39 @@ const HomePage = () => {
           width="700px" // Increased width
           height="600px" // Increased height
           sx={{
-            backgroundColor: "rgba(255, 255, 255, 0.5)", // Adjust alpha value here (0.5 = 50% opacity)
+            backgroundColor: "rgba(255, 255, 255, 0.5)", // Transparent white background
             padding: "20px",
-            borderRadius: "10px", // Rounded edges
+            borderRadius: "15px", // Slightly rounded edges
+            overflow: "hidden", // Hide overflow to prevent image distortion
           }}
         >
           <Box
             width={"100%"}
-            height={"300px"}
-            sx={{ backgroundColor: "#000000", padding: "20px" }}
-          ></Box>
+            height={"400px"} // Increased image height
+            sx={{
+              padding: "20px",
+              borderRadius: "15px", // Slightly rounded edges for the image
+              overflow: "hidden",
+            }}
+          >
+            <img
+              src="http://localhost:3001/assets/swordbanner.png" // Replace with your image URL
+              alt="Your Image"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "contain", // Ensures the whole image is visible
+                borderRadius: "15px", // Uniform border radius for the image
+              }}
+            />
+          </Box>
           <Box
             display={"flex"}
             justifyContent={"space-around"}
             alignItems={"flex-end"} // Align buttons to the bottom
             width={"100%"}
             height={"150px"}
-            sx={{ padding: "20px", mt: "120px" }}
+            sx={{ padding: "20px", mt: "10px" }}
           >
             <Button
               variant="contained"
