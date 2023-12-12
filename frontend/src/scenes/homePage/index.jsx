@@ -1,10 +1,4 @@
-import {
-  Box,
-  Button,
-  IconButton,
-  Typography,
-  useMediaQuery,
-} from "@mui/material";
+import { Box, Button, Typography, useMediaQuery } from "@mui/material";
 import NavBar from "scenes/navbar";
 import { useState, useEffect } from "react";
 
@@ -55,9 +49,13 @@ const HomePage = () => {
         alignItems="center"
       >
         <Box
-          width="600px"
-          height="500px"
-          sx={{ backgroundColor: "#ffffff", padding: "20px" }}
+          width="700px" // Increased width
+          height="600px" // Increased height
+          sx={{
+            backgroundColor: "rgba(255, 255, 255, 0.5)", // Adjust alpha value here (0.5 = 50% opacity)
+            padding: "20px",
+            borderRadius: "10px", // Rounded edges
+          }}
         >
           <Box
             width={"100%"}
@@ -66,32 +64,36 @@ const HomePage = () => {
           ></Box>
           <Box
             display={"flex"}
-            flexDirection={"row"}
             justifyContent={"space-around"}
+            alignItems={"flex-end"} // Align buttons to the bottom
             width={"100%"}
             height={"150px"}
-            sx={{ backgroundColor: "blue", padding: "20px", mt: "20px" }}
+            sx={{ padding: "20px", mt: "120px" }}
           >
-            <Box
-              display={"flex"}
-              justifyContent={"center"}
-              alignItems={"center"}
-              height={"100%"}
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{
+                bgcolor: "blue",
+                width: "40%",
+                height: "60%",
+                borderRadius: "10px",
+              }}
             >
-              <IconButton>
-                <Button>One Time Pull</Button>
-              </IconButton>
-            </Box>
-            <Box
-              display={"flex"}
-              justifyContent={"center"}
-              alignItems={"center"}
-              height={"100%"}
+              One Pull
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{
+                bgcolor: "blue",
+                width: "40%",
+                height: "60%",
+                borderRadius: "10px",
+              }}
             >
-              <IconButton>
-                <Button>Ten Time Pull</Button>
-              </IconButton>
-            </Box>
+              Ten Pull
+            </Button>
           </Box>
         </Box>
       </Box>
