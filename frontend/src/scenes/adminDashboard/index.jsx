@@ -6,15 +6,23 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import CategoryIcon from "@mui/icons-material/Category";
 
 const AdminDashboardPage = () => {
+  const [bannerImage, setBannerImage] = useState(""); // State to hold the banner image URL
   const player = useSelector((state) => state?.user);
-
-  const [logging, setLogging] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // Function to handle uploading a new banner image
+  const handleImageUpload = (event) => {
+    const uploadedImage = event.target.files[0];
+    // Perform operations to upload the image and update the state with its URL
+    // For example:
+    // const imageURL = uploadImageToServer(uploadedImage);
+    // setBannerImage(imageURL);
+  };
+
   const handleClose = () => {
-    setLogging(false);
+    // Logic to handle closing
   };
 
   return (

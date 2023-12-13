@@ -17,6 +17,7 @@ import AddItemForm from "./AddItemForm";
 
 const AdminManageItemsPage = () => {
   const [isAddItem, setIsAddItem] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null); // Track the selected item
 
   const token = useSelector((state) => state.token);
 
@@ -166,9 +167,16 @@ const AdminManageItemsPage = () => {
           {Object.keys(itemsData).length > 0 ? (
             itemsData.map((item) => (
               <Box key={item.id} my={2}>
-                <Typography variant="h6">{item.name}</Typography>
-                <Typography variant="body1">{item.description}</Typography>
+                {/* Clickable item to open modal */}
+                <Typography
+                  variant="h6"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setSelectedItem(item)}
+                >
+                  {item.name}
+                </Typography>
                 {/* Render other item information */}
+                <Typography variant="body1">{item.description}</Typography>
               </Box>
             ))
           ) : (
@@ -176,14 +184,22 @@ const AdminManageItemsPage = () => {
           )}
         </Box>
       </Box>
-      <Dialog open={isAddItem} onClose={handleClose}>
-        <DialogTitle>Add Item</DialogTitle>
-        <DialogContent sx={{ width: "500px" }}>
-          <AddItemForm />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-        </DialogActions>
+      {/* Modal to display item details */}
+      <Dialog open={!!selectedItem} onClose={() => setSelectedItem(null)}>
+        {selectedItem && (
+          <>
+            <DialogTitle>{selectedItem.name}</DialogTitle>
+            <DialogContent>
+              <Typography variant="body1">
+                {selectedItem.description}
+              </Typography>
+              {/* Render other details */}
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setSelectedItem(null)}>Close</Button>
+            </DialogActions>
+          </>
+        )}
       </Dialog>
     </Box>
   );

@@ -1,21 +1,52 @@
-import { Box, Divider, Typography } from "@mui/material";
-import { useState } from "react";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  Typography,
+} from "@mui/material";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import CategoryIcon from "@mui/icons-material/Category";
 
 const AdminManagePlayersPage = () => {
-  const player = useSelector((state) => state?.user);
+  const [isAddPlayer, setIsAddPlayer] = useState(false); // Define useState
+  const [token, setToken] = useState(""); // Define token if required
 
-  const [logging, setLogging] = useState(false);
-
+  const players = useSelector((state) => state.players);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleClose = () => {
-    setLogging(false);
+    setIsAddPlayer(false);
   };
+
+  useEffect(() => {
+    // Replace this fetch operation with your actual API call to get players
+    const fetchPlayers = async () => {
+      try {
+        const response = await fetch("http://localhost:3001/players/", {
+          method: "GET",
+          headers: { Authorization: `Bearer ${token}` }, // Use token here
+        });
+
+        const data = await response.json();
+        if (data) {
+          dispatch({ type: "SET_PLAYERS", payload: data });
+        }
+      } catch (error) {
+        console.error("Error fetching players:", error);
+      }
+    };
+
+    // Call the function to fetch players
+    fetchPlayers();
+  }, [dispatch, token]); // Add token to the dependencies array
 
   return (
     <Box
@@ -26,6 +57,7 @@ const AdminManagePlayersPage = () => {
       height="100vh"
       position="relative"
     >
+      {/* Sidebar */}
       <Box
         position="fixed"
         style={{
@@ -110,49 +142,40 @@ const AdminManagePlayersPage = () => {
         </Box>
         <Divider />
       </Box>
+
+      {/* Main Content */}
       <Box
-        width="700px" // Increased width
-        height="600px" // Increased height
+        width="700px"
+        height="600px"
         sx={{
-          backgroundColor: "rgba(255, 255, 255, 0.5)", // Transparent white background
+          backgroundColor: "rgba(255, 255, 255, 0.5)",
           padding: "20px",
-          borderRadius: "15px", // Slightly rounded edges
-          overflow: "hidden", // Hide overflow to prevent image distortion
+          borderRadius: "15px",
+          overflow: "hidden",
         }}
         zIndex={3}
       >
-        <Box
-          width={"100%"}
-          height={"400px"} // Increased image height
-          sx={{
-            padding: "20px",
-            borderRadius: "15px", // Slightly rounded edges for the image
-            overflow: "hidden",
-          }}
-        >
-          <a href="your_link_here">
-            {" "}
-            {/* Add the URL you want to navigate to here */}
-            <img
-              src="http://localhost:3001/assets/swordbanner.png" // Replace with your image URL
-              alt="Image.jpg"
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "contain", // Ensures the whole image is visible
-                borderRadius: "15px", // Uniform border radius for the image
-              }}
-            />
-          </a>
+        {/* Title and Delete Player button */}
+        <Box display="flex" flexDirection="row" justifyContent="space-between">
+          <Typography variant="h4">Manage Players</Typography>
+          <Button variant="contained" color="primary">
+            Delete Player
+          </Button>
         </Box>
-        <Box
-          display={"flex"}
-          justifyContent={"space-around"}
-          alignItems={"flex-end"} // Align buttons to the bottom
-          width={"100%"}
-          height={"150px"}
-          sx={{ padding: "20px", mt: "10px" }}
-        ></Box>
+
+        {/* Player list */}
+        <Box mt={3}>
+          {players && players.length > 0 ? (
+            players.map((player) => (
+              <Box key={player.id} my={2}>
+                <Typography variant="h6">{player.username}</Typography>
+                {/* Render other player information */}
+              </Box>
+            ))
+          ) : (
+            <Typography variant="body1">No players available</Typography>
+          )}
+        </Box>
       </Box>
     </Box>
   );
