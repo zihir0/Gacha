@@ -103,7 +103,7 @@ const LoginForm = () => {
           })
         );
         dispatch(setRole({ role: loggedIn.role }));
-        window.location.reload();
+        navigate("/admin/dashboard");
       }
     }
   };
@@ -130,7 +130,12 @@ const LoginForm = () => {
           setFieldValue,
           resetForm,
         }) => (
-          <form onSubmit={handleSubmit}>
+          <form
+            onSubmit={handleSubmit}
+            style={{
+              padding: "20px",
+            }}
+          >
             <Box
               display="grid"
               gap="30px"

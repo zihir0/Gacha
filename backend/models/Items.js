@@ -11,23 +11,23 @@ const ItemSchema = new mongoose.Schema(
       required: true,
     },
     rarity: {
-        type: String,
-        required: true,
+      type: Number,
+      required: true,
     },
     type: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     image: {
-        type: Buffer,
-        required: true,
+      type: String,
+      required: true,
     },
     droprate: {
-        type: Number,
-        required: true,
+      type: Number,
+      required: true,
+    },
   },
-},
-  { timestamps: true },
+  { timestamps: true }
 );
 
 const Item = mongoose.model("Item", ItemSchema);

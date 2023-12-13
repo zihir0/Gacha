@@ -5,9 +5,12 @@ import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material";
 import { themeSettings } from "theme";
-import AdminLoginPage from "scenes/admin/adminLoginPage";
 import ProtectedRoute from "ProtectedRoutes";
 import InventoryPage from "scenes/inventoryPage";
+import AdminLoginPage from "scenes/adminLoginPage";
+import AdminDashboardPage from "scenes/adminDashboard";
+import AdminManageItemsPage from "scenes/adminManageItems";
+import AdminManagePlayersPage from "scenes/adminManagePlayers";
 
 function App() {
   const mode = useSelector((state) => state.mode);
@@ -29,6 +32,20 @@ function App() {
 
             {/*Admin Routes */}
             <Route path="/admin" element={<AdminLoginPage />} />
+            <Route
+              path="/admin/dashboard"
+              element={
+                isAuth ? <AdminDashboardPage /> : <Navigate to="/admin" />
+              }
+            />
+            <Route
+              path="/admin/manage/Players"
+              element={<AdminManagePlayersPage />}
+            />
+            <Route
+              path="/admin/manage/Items"
+              element={<AdminManageItemsPage />}
+            />
             <Route
               element={<ProtectedRoute role={role} isAuth={isAuth} />}
             ></Route>

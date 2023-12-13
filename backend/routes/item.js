@@ -10,5 +10,4 @@ router.get("/", verifyToken, getItems);
 
 router.delete("/:id", verifyToken, deleteItem);
 
-
 export default router;

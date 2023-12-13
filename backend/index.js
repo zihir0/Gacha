@@ -13,10 +13,11 @@ import { register } from "./controllers/auth.js";
 import { verifyToken } from "./middleware/auth.js";
 import { uploadImage } from "./controllers/image.js";
 import { updatePlayerProfile } from "./controllers/player.js";
-import itemRoutes from "./routes/item.js"
-import adminRoutes from "./routes/admin.js"
-import playerRoutes from "./routes/player.js"
-import inventoryRoutes from "./routes/inventory.js"
+import itemRoutes from "./routes/item.js";
+import adminRoutes from "./routes/admin.js";
+import playerRoutes from "./routes/player.js";
+import inventoryRoutes from "./routes/inventory.js";
+import { addItem } from "./controllers/items.js";
 
 /* CONFIGURATIONS */
 const __filename = fileURLToPath(import.meta.url);
@@ -44,21 +45,16 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 /* ROUTES WITH FILES */
-app.post("/auth/register", upload.single("picture"), register);
-app.patch(
-  "/users/:id/update",
-  verifyToken,
-  upload.single("picture"),
-  updatePlayerProfile
-);
-app.post("/upload/image", verifyToken, upload.single("picture"), uploadImage);
+app.post("/auth/register", upload.single("image"), register);
+app.post("/upload/image", verifyToken, upload.single("image"), uploadImage);
+app.post("/item/add", verifyToken, upload.single("image"), addItem);
 
 /* ROUTES */
 app.use("/auth", authRoutes);
 app.use("/player", playerRoutes);
-app.use("/items", itemRoutes)
-app.use("/admin", adminRoutes)
-app.use("/inventory", inventoryRoutes)
+app.use("/items", itemRoutes);
+app.use("/admin", adminRoutes);
+app.use("/inventory", inventoryRoutes);
 
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 6001;

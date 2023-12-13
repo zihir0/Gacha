@@ -31,7 +31,12 @@ export const updateItem = async (req, res) => {
 
       // Prepare the updated fields
       const updatedFields = {
-        name, description, rarity, type, image, droprate,
+        name,
+        description,
+        rarity,
+        type,
+        image,
+        droprate,
       };
 
       const updatedItem = await Item.findByIdAndUpdate(
@@ -54,13 +59,32 @@ export const updateItem = async (req, res) => {
 };
 
 export const deleteItem = async (req, res) => {
-    try {
-      const { id } = req.params;
-  
-      const item = await Item.findByIdAndDelete(id);
-      res.status(200).json(item);
-    } catch (err) {
-      res.status(404).json({ message: err.message });
-    }
-  };
+  try {
+    const { id } = req.params;
 
+    const item = await Item.findByIdAndDelete(id);
+    res.status(200).json(item);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
+
+export const addItem = async (req, res) => {
+  try {
+    const { name, description, rarity, type, image, droprate } = req.body;
+
+    const newItem = new Item({
+      name,
+      description,
+      rarity,
+      type,
+      image,
+      droprate,
+    });
+
+    const savedItem = await newItem.save();
+    res.status(201).json(savedItem);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
