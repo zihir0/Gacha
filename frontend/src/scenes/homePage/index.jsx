@@ -299,6 +299,8 @@ const HomePage = () => {
                 sx={{
                   bgcolor: "blue",
                   borderRadius: "10px",
+                  backgroundImage:
+                    'url("http://localhost:3001/assets/Bag.jpg")',
                   width: "150px", // Increased width
                   height: "50px", // Increased height
                   fontSize: "18px", // Increased font size
