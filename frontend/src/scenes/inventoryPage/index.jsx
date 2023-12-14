@@ -6,7 +6,7 @@ const InventoryPage = () => {
   const player = useSelector((state) => state?.user);
   const token = useSelector((state) => state?.token);
 
-  const [itemsData, setItemsData] = useState({});
+  const [itemsData, setItemsData] = useState([]);
 
   const getInventoryByPlayer = async () => {
     const response = await fetch(
@@ -19,7 +19,7 @@ const InventoryPage = () => {
 
     const inventoryData = await response.json();
 
-    if (inventoryData) {
+    if (inventoryData && inventoryData.length > 0) {
       let itemData = [];
       for (const item of inventoryData) {
         const itemResponse = await fetch(
@@ -89,14 +89,14 @@ const InventoryPage = () => {
         zIndex={2}
       >
         <Typography>Inventory</Typography>
-        <Box
-          display={"flex"}
-          flexDirection={"row"}
-          flexWrap={"wrap"}
-          gap={"10px"}
-        >
-          {itemsData.length > 0 &&
-            itemsData.map((item, index) => (
+        {itemsData.length > 0 ? (
+          <Box
+            display={"flex"}
+            flexDirection={"row"}
+            flexWrap={"wrap"}
+            gap={"10px"}
+          >
+            {itemsData.map((item, index) => (
               <Box
                 display={"flex"}
                 flexDirection={"row"}
@@ -132,7 +132,12 @@ const InventoryPage = () => {
                 </Box>
               </Box>
             ))}
-        </Box>
+          </Box>
+        ) : (
+          <Typography variant="h5">
+            Inventory Empty. Pull to Get Items
+          </Typography>
+        )}
       </Box>
     </Box>
   );
