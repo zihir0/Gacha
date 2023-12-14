@@ -243,6 +243,17 @@ const AdminManageItemsPage = () => {
           </>
         )}
       </Dialog>
+      <Dialog open={isAddItem} onClose={() => handleClose()}>
+        <>
+          <DialogTitle>Add Item</DialogTitle>
+          <DialogContent sx={{ width: "600px" }}>
+            <AddItemForm />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => handleClose()}>Close</Button>
+          </DialogActions>
+        </>
+      </Dialog>
     </Box>
   );
 };
