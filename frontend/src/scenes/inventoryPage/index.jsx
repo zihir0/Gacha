@@ -31,8 +31,13 @@ const InventoryPage = () => {
         );
 
         const fetchedItem = await itemResponse.json();
+
         if (fetchedItem) {
-          itemData.push(fetchedItem);
+          const inventoryItem = {
+            inventory_id: item._id,
+            ...fetchedItem, // Spread fetchedItem properties
+          };
+          itemData.push(inventoryItem);
         }
       }
       setItemsData(itemData);
@@ -49,13 +54,9 @@ const InventoryPage = () => {
         }
       );
 
-      if (response.ok) {
-        setItemsData((prevItems) =>
-          prevItems.filter((item) => item._id !== itemId)
-        );
-        console.log(`Item ${itemId} deleted.`);
-      } else {
-        console.error(`Failed to delete item ${itemId}`);
+      const data = await response.json();
+      if (data) {
+        window.location.reload();
       }
     } catch (error) {
       console.error("Error deleting item from inventory:", error);
@@ -124,7 +125,7 @@ const InventoryPage = () => {
                   <Button
                     variant="outlined"
                     color="error"
-                    onClick={() => deleteItemFromInventory(item._id)}
+                    onClick={() => deleteItemFromInventory(item.inventory_id)}
                   >
                     Delete
                   </Button>

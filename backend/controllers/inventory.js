@@ -78,3 +78,19 @@ export const getInvetoryByPlayer = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+export const deleteInventory = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const inventory = await Inventory.findByIdAndDelete(id);
+
+    if (!inventory) {
+      return res.status(404).json({ message: "Inventory not found" });
+    }
+
+    res.status(200).json(inventory);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
