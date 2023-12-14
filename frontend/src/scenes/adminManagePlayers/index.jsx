@@ -16,7 +16,9 @@ import CategoryIcon from "@mui/icons-material/Category";
 
 const AdminManagePlayersPage = () => {
   const [isAddPlayer, setIsAddPlayer] = useState(false); // Define useState
-  const [token, setToken] = useState(""); // Define token if required
+  const token = useSelector((state) => state?.token); // Define token if required
+
+  const [playersData, setPlayersData] = useState({});
 
   const players = useSelector((state) => state.players);
   const dispatch = useDispatch();
@@ -26,27 +28,25 @@ const AdminManagePlayersPage = () => {
     setIsAddPlayer(false);
   };
 
-  useEffect(() => {
-    // Replace this fetch operation with your actual API call to get players
-    const fetchPlayers = async () => {
-      try {
-        const response = await fetch("http://localhost:3001/players/", {
-          method: "GET",
-          headers: { Authorization: `Bearer ${token}` }, // Use token here
-        });
+  const fetchPlayers = async () => {
+    try {
+      const response = await fetch("http://localhost:3001/player", {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` }, // Use token here
+      });
 
-        const data = await response.json();
-        if (data) {
-          dispatch({ type: "SET_PLAYERS", payload: data });
-        }
-      } catch (error) {
-        console.error("Error fetching players:", error);
+      const data = await response.json();
+      if (data) {
+        setPlayersData(data);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching players:", error);
+    }
+  };
 
-    // Call the function to fetch players
+  useEffect(() => {
     fetchPlayers();
-  }, [dispatch, token]); // Add token to the dependencies array
+  }, []); // Add token to the dependencies array
 
   return (
     <Box
@@ -158,22 +158,34 @@ const AdminManagePlayersPage = () => {
         {/* Title and Delete Player button */}
         <Box display="flex" flexDirection="row" justifyContent="space-between">
           <Typography variant="h4">Manage Players</Typography>
-          <Button variant="contained" color="primary">
-            Delete Player
-          </Button>
         </Box>
 
         {/* Player list */}
         <Box mt={3}>
-          {players && players.length > 0 ? (
-            players.map((player) => (
+          {playersData.length > 0 ? (
+            playersData.map((player) => (
               <Box key={player.id} my={2}>
-                <Typography variant="h6">{player.username}</Typography>
-                {/* Render other player information */}
+                <Box container alignItems="center">
+                  <Box item xs={8}>
+                    <Typography variant="h6">{player.username}</Typography>
+                    <Typography variant="body1">{player.email}</Typography>
+                  </Box>
+                  <Box item xs={4} style={{ textAlign: "right" }}>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={() => {
+                        console.log("Changing data for player ID:", player.id);
+                      }}
+                    >
+                      Change Player Data
+                    </Button>
+                  </Box>
+                </Box>
               </Box>
             ))
           ) : (
-            <Typography variant="body1">No players available</Typography>
+            <Typography variant="body1">No Players available</Typography>
           )}
         </Box>
       </Box>

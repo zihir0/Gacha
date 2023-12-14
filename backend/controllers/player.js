@@ -1,4 +1,4 @@
-import Player from "../models/Player.js"
+import Player from "../models/Player.js";
 
 /* READ */
 export const getPlayer = async (req, res) => {
@@ -27,7 +27,7 @@ export const updatePlayerProfile = async (req, res) => {
     const player = await Player.findById(id);
 
     if (player) {
-      const { username, email, } = req.body;
+      const { username, email } = req.body;
 
       // Check if the email already exists for another user
       const existingPlayer = await Player.findOne({
@@ -65,3 +65,13 @@ export const updatePlayerProfile = async (req, res) => {
   }
 };
 
+export const deletePlayer = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const player = await Player.findByIdAndDelete(id);
+    res.status(200).json(player);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};

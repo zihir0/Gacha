@@ -174,33 +174,33 @@ const AdminManageItemsPage = () => {
             Add Item
           </Button>
         </Box>
+        {/* Item list */}
         <Box mt={3}>
-          {Object.keys(itemsData).length > 0 ? (
+          {itemsData.length > 0 ? (
             itemsData.map((item) => (
               <Box key={item.id} my={2}>
-                {/* Clickable item to open modal */}
-                <Typography
-                  variant="h6"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => setSelectedItem(item)}
-                >
-                  {item.name}
-                </Typography>
-                {/* Render other item information */}
-                <Typography variant="body1">{item.description}</Typography>
-
-                {/* Button to change item data */}
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  onClick={() => {
-                    // Implement logic to change item data here
-                    // For demonstration purposes, just log the item ID for now
-                    console.log("Changing data for item ID:", item.id);
-                  }}
-                >
-                  Change Item Data
-                </Button>
+                <Box container alignItems="center">
+                  <Box item xs={8}>
+                    <Typography
+                      variant="h6"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => setSelectedItem(item)}
+                    >
+                      {item.name}
+                    </Typography>
+                  </Box>
+                  <Box item xs={4} style={{ textAlign: "right" }}>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={() => {
+                        console.log("Changing data for item ID:", item.id);
+                      }}
+                    >
+                      Change Item Data
+                    </Button>
+                  </Box>
+                </Box>
               </Box>
             ))
           ) : (
@@ -208,7 +208,8 @@ const AdminManageItemsPage = () => {
           )}
         </Box>
       </Box>
-      {/* Modal to display item details */}
+
+      {/* Item Details Modal */}
       <Dialog open={!!selectedItem} onClose={() => setSelectedItem(null)}>
         {selectedItem && (
           <>
@@ -224,7 +225,7 @@ const AdminManageItemsPage = () => {
               <Typography variant="body1">
                 Droprate: {selectedItem.droprate}%
               </Typography>
-              <Box width={"100%"} height={"100%"}>
+              <Box width="100%" height="100%">
                 <img
                   src={`http://localhost:3001/assets/${selectedItem.image}`}
                   alt="item-img"
@@ -241,17 +242,6 @@ const AdminManageItemsPage = () => {
             </DialogActions>
           </>
         )}
-      </Dialog>
-      <Dialog open={isAddItem} onClose={() => handleClose()}>
-        <>
-          <DialogTitle>Add Item</DialogTitle>
-          <DialogContent sx={{ width: "600px" }}>
-            <AddItemForm />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => handleClose()}>Close</Button>
-          </DialogActions>
-        </>
       </Dialog>
     </Box>
   );

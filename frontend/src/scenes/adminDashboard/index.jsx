@@ -119,8 +119,8 @@ const AdminDashboardPage = () => {
         <Divider />
       </Box>
       <Box
-        width="700px" // Increased width
-        height="600px" // Increased height
+        width="720px" // Increased width
+        height="440px" // Increased height
         sx={{
           backgroundColor: "rgba(255, 255, 255, 0.5)", // Transparent white background
           padding: "20px",

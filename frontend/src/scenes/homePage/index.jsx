@@ -156,7 +156,7 @@ const HomePage = () => {
               overflow: "hidden",
             }}
           >
-            <a href="your_link_here">
+            <a href="http://localhost:3001/assets/swordbanner_details.png">
               {" "}
               {/* Add the URL you want to navigate to here */}
               <img
