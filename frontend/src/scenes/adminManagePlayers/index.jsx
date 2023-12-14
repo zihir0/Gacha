@@ -178,7 +178,7 @@ const AdminManagePlayersPage = () => {
                         console.log("Changing data for player ID:", player.id);
                       }}
                     >
-                      Change Player Data
+                      Delete Player Data
                     </Button>
                   </Box>
                 </Box>
