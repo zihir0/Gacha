@@ -41,6 +41,17 @@ const AdminManageItemsPage = () => {
     setIsAddItem(false);
   };
 
+  // Define state to handle the edited item
+  const [editedItem, setEditedItem] = useState(null);
+
+  // Function to handle changes to item data
+  const handleItemChange = () => {
+    // Logic to update item data goes here
+    // For demonstration purposes, let's update the description of the item
+    console.log("Updated item data:", editedItem);
+    setSelectedItem(null); // Close the modal after making changes
+  };
+
   useEffect(() => {
     getItems();
   }, []);
@@ -177,6 +188,19 @@ const AdminManageItemsPage = () => {
                 </Typography>
                 {/* Render other item information */}
                 <Typography variant="body1">{item.description}</Typography>
+
+                {/* Button to change item data */}
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => {
+                    // Implement logic to change item data here
+                    // For demonstration purposes, just log the item ID for now
+                    console.log("Changing data for item ID:", item.id);
+                  }}
+                >
+                  Change Item Data
+                </Button>
               </Box>
             ))
           ) : (
@@ -191,15 +215,43 @@ const AdminManageItemsPage = () => {
             <DialogTitle>{selectedItem.name}</DialogTitle>
             <DialogContent>
               <Typography variant="body1">
-                {selectedItem.description}
+                Item Name: {selectedItem.description}
               </Typography>
-              {/* Render other details */}
+              <Typography variant="body1">
+                Rarity: {selectedItem.rarity}
+              </Typography>
+              <Typography variant="body1">Type: {selectedItem.type}</Typography>
+              <Typography variant="body1">
+                Droprate: {selectedItem.droprate}%
+              </Typography>
+              <Box width={"100%"} height={"100%"}>
+                <img
+                  src={`http://localhost:3001/assets/${selectedItem.image}`}
+                  alt="item-img"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
+              </Box>
             </DialogContent>
             <DialogActions>
               <Button onClick={() => setSelectedItem(null)}>Close</Button>
             </DialogActions>
           </>
         )}
+      </Dialog>
+      <Dialog open={isAddItem} onClose={() => handleClose()}>
+        <>
+          <DialogTitle>Add Item</DialogTitle>
+          <DialogContent sx={{ width: "600px" }}>
+            <AddItemForm />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => handleClose()}>Close</Button>
+          </DialogActions>
+        </>
       </Dialog>
     </Box>
   );

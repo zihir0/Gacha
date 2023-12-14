@@ -12,7 +12,7 @@ import authRoutes from "./routes/auth.js";
 import { register } from "./controllers/auth.js";
 import { verifyToken } from "./middleware/auth.js";
 import { uploadImage } from "./controllers/image.js";
-import { updatePlayerProfile } from "./controllers/player.js";
+import itemNotlogRoutes from "./routes/item-notlog.js";
 import itemRoutes from "./routes/item.js";
 import adminRoutes from "./routes/admin.js";
 import playerRoutes from "./routes/player.js";
@@ -55,6 +55,7 @@ app.use("/player", playerRoutes);
 app.use("/items", itemRoutes);
 app.use("/admin", adminRoutes);
 app.use("/inventory", inventoryRoutes);
+app.use("/itemnotlog", itemNotlogRoutes);
 
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 6001;

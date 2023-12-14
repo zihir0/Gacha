@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 
 const InventorySchema = new mongoose.Schema(
   {
-    user_id: Number,
+    user_id: mongoose.Schema.Types.ObjectId,
     item_id: {
-      type: Number,
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
     quantity: {

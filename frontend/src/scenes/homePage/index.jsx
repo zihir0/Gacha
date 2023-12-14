@@ -1,4 +1,5 @@
 import {
+  Backdrop,
   Box,
   Button,
   Dialog,
@@ -7,7 +8,7 @@ import {
   DialogTitle,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import LoginForm from "./LoginForm";
 import { setLogout } from "state";
@@ -16,14 +17,98 @@ import { useNavigate } from "react-router-dom";
 const HomePage = () => {
   const player = useSelector((state) => state?.user);
 
+  const token = useSelector((state) => state?.token);
+
   const [logging, setLogging] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [itemsData, setItemsData] = useState({});
+  const [result, setResult] = useState({});
+
+  const [showAnimation, setShowAnimation] = useState(false);
+
   const handleClose = () => {
     setLogging(false);
   };
+
+  const getItems = async () => {
+    const response = await fetch("http://localhost:3001/itemnotlog/", {
+      method: "GET",
+    });
+
+    const data = await response.json();
+    if (data) {
+      setItemsData(data);
+    }
+  };
+
+  function handlePull(numPulls) {
+    const results = [];
+    for (let pull = 0; pull < numPulls; pull++) {
+      const randomNumber = Math.random();
+      let selectedItem = null;
+      let cumulativeDropRate = 0;
+
+      for (const item of itemsData) {
+        cumulativeDropRate += item.droprate / 100;
+        if (randomNumber <= cumulativeDropRate) {
+          selectedItem = item;
+          addItemToInventory(selectedItem);
+          break;
+        }
+      }
+
+      results.push(selectedItem);
+      setResult(selectedItem);
+
+      if (numPulls === 1) {
+        setShowAnimation(true);
+        setTimeout(() => {
+          setShowAnimation(false);
+        }, 5900); // Adjust duration as needed
+      } else if (numPulls === 10) {
+        setShowAnimation(true);
+        setTimeout(() => {
+          setShowAnimation(false);
+        }, 5900); // Adjust duration as needed
+      }
+    }
+    return console.log("Obtained Items:", results);
+  }
+
+  const addItemToInventory = async (item) => {
+    try {
+      const body = {
+        item_id: item._id,
+        user_id: player._id,
+        quantity: 1,
+      };
+      const response = await fetch("http://localhost:3001/inventory/add", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (response.ok) {
+        // Handle success, if needed
+        console.log(`Item added: ${item.id}`);
+      } else {
+        // Handle failure, if needed
+        console.error(`Failed to add item: ${item.id}`);
+      }
+    } catch (error) {
+      console.error("Error adding item to inventory:", error);
+    }
+  };
+
+  useEffect(() => {
+    getItems();
+  }, []);
 
   return (
     <Box
@@ -110,6 +195,9 @@ const HomePage = () => {
                   fontWeight: "bold", // Bolden text
                   fontSize: "16px", // Adjust font size
                 }}
+                onClick={() => {
+                  handlePull(1);
+                }}
               >
                 1 X Pull
               </Button>
@@ -151,6 +239,9 @@ const HomePage = () => {
                   textTransform: "none", // Preserve original case of text
                   fontWeight: "bold", // Bolden text
                   fontSize: "16px", // Adjust font size
+                }}
+                onClick={() => {
+                  handlePull(10);
                 }}
               >
                 10 X Pull
@@ -240,6 +331,30 @@ const HomePage = () => {
           <Button onClick={handleClose}>Cancel</Button>
         </DialogActions>
       </Dialog>
+      <Backdrop
+        open={showAnimation}
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+            width: "100vw",
+          }}
+        >
+          <img
+            src="http://localhost:3001/assets/1_3Star_single.gif"
+            alt="common"
+            style={{
+              maxWidth: "100%",
+              maxHeight: "100%",
+              animation: "fadeIn 1s ease-in-out",
+            }}
+          />
+        </Box>
+      </Backdrop>
     </Box>
   );
 };
